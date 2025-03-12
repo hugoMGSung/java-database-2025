@@ -2,7 +2,7 @@
 SELECT * FROM dba_data_files;
 
 drop tablespace sampledb
-including contents and datafiles ;
+including contents and datafiles;
 
 CREATE TABLESPACE sampledb DATAFILE '/u01/app/oracle/oradata/XE/sampledb.dbf' SIZE 100M
 autoextend ON NEXT 5M;
