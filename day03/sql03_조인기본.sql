@@ -52,10 +52,62 @@ SELECT e.employee_id, e.first_name || ' ' || e.last_name AS "full_name"
      , l.city, l.STATE_PROVINCE, l.STREET_ADDRESS
   FROM employees e
  INNER JOIN departments d
-    ON e.department_id = d.department_id
+    ON e.DEPARTMENT_ID artment_id = d.department_id
  INNER JOIN locations l
     ON l.location_id = d.location_id
  WHERE d.department_id = 60;
 
 -- 외부조인
+-- 보통 PK와 FK간의 일치하는 조건의 데이터를 찾는것 - 내부조인
+-- PK와 FK간의 일치하지 않는 조건의 데이터도 찾는것 - 외부조인
+-- 테이블1 OUTER JOIN 테이블2
+-- 테이블1번을 기준으로 외부조인 LEFT OUTER JOIN
+-- 테이블2번을 기준으로 외부조인 RIGIHT OUTER JOIN
 
+SELECT *
+  FROM employees e
+ inner JOIN departments d
+    ON e.department_id = d.department_id
+ WHERE e.DEPARTMENT_ID IS NULL;
+
+-- ANSI 표준문법
+-- employees테이블에는 있는데 departments테이블에는 없는 데이터를 같이 출력해줘
+SELECT *
+  FROM employees e
+  LEFT OUTER JOIN departments d
+    ON e.department_id = d.department_id
+ WHERE e.DEPARTMENT_ID IS NULL;
+
+-- departments테이블에는 있는데 employees 테이블에 없는 데이터를 같이 출력해줘
+SELECT *
+  FROM employees e
+ RIGHT OUTER JOIN departments d
+    ON e.department_id = d.department_id;
+
+-- Oracle 문법
+-- (+)만족하지 않는 조건도 더 나오게 한다는 뜻
+-- LEFT OUTER JOIN
+SELECT *
+  FROM employees e, departments d
+ WHERE e.department_id = d.department_id(+);
+
+-- RIGHT OUTER JOIN
+SELECT *
+  FROM employees e, departments d
+ WHERE e.department_id(+) = d.department_id;
+   
+-- INNER JOIN은 INNER를 생략가능
+-- OUTER JOIN에만 LEFT, RIGHT존재하므로 OUTER 생략가능
+    
+-- 셀프조인: 자기자신을 두번 사용하는 조인
+SELECT e1.employee_id
+	 , e1.first_name || ' ' || e1.LAST_NAME AS "full_emp_name"
+     , e1.job_id
+     , e1.manager_id
+     , e2.first_name || ' ' || e2.LAST_NAME AS "full_mng_name"
+     , e2.JOB_ID
+  FROM employees e1, employees e2
+ WHERE e1.manager_id = e2.employee_id(+)
+ ORDER BY e1.manager_id;
+    
+    
