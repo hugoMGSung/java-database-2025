@@ -160,7 +160,8 @@ Java개발자 과정 Database 리포지토리
     - 확장 > Database 검색 > Database Client(Weijan Chen) > 확장중 Database 선택
 
     <img src="./image/db002.png" width="700">
-- DML 
+
+- DML : [INSERT쿼리](./day04/sql01_INSERT.sql), [UPDATE/DELETE쿼리](./day04/sql02_UPDATE_DELETE.sql)
     - INSERT - 테이블에 새로운 데이터를 삽입하는 명령
         - 한 건식 삽입
         ```sql
@@ -181,25 +182,58 @@ Java개발자 과정 Database 리포지토리
         DELETE FROM 테이블명
         [WHERE 조건];
         ```
-- 트랜잭션
+- 트랜잭션 : [트랜잭션쿼리](./day04/sql03_트랜잭션.sql)
     - 논리적인 처리단위.
     - 은행에서 돈을 찾을때 아주 많은 테이블 접근해서 일을 처리
         - 적어도 일곱여덟개 이상의 테이블 접근해서 조회하고 업데이트 수행
         - 제대로 일이 처리안되면 다시 원상복귀
+        - DB 설정 AUTO COMMIT 해제 권함
+        - ROLLBACK 트랜잭션 종료가 아님. COMMIT 만 종료의 뜻함.
         ```sql
-        BEGIN TRANSACTION;  -- 트랜잭션 시작
+        SET TRANSACTION READ WRITE;  -- 트랜잭션 시작(옵션)
         COMMIT;     -- 트랜잭션 확정
         ROLLBACK;   -- 원상복귀
         ```
 
-- 제약조건(Constraint)
+- 제약조건(Constraint) : [제약조건쿼리](./day04/sql04_제약조건.sql)
     - 잘못된 데이터가 들어가지 않도록 막는 기법
-        - PK - 기본키, UIQUE NOT NULL. 중복되지 않고 없어도 안됨
-        - FK - 외래키, 다른테이블 PK에 없는 값을 가져다 쓸 수 없음
+        - PRIMARY KEY - 기본키, UIQUE NOT NULL. 중복되지 않고 없어도 안됨
+        - FORIEGN KEY - 외래키, 다른테이블 PK에 없는 값을 가져다 쓸 수 없음
         - NOT NULL - 값이 빠지면 안됨
         - UNIQUE - 들어간 데이터가 중복되면 안됨
         - CHECK - 기준에 부합하지 않는 데이터는 입력되면 안됨
-- INDEX
+        - DEFAULT - NULL입력시 기본값이 입력되도록 하는 제약조건
+        ```sql
+        CREATE TABLE 테이블명 (
+            컬럼 생성시 제약조건 추가
+        );
+
+        ALTER TABLE 테이블명 ADD CONSTRAINT 제약조건
+        ```
+- INDEX : [INDEX쿼리](./day04/sql05_인덱스.sql), [인덱스용테이블생성](./ref/bulk_data_insert.sql)
+    - 책의 찾아보기와 동일한 기능
+    - 검색을 매우 빨리 할 수 있도록 해줌
+    - B(alanced) Tree를 사용해서 검색횟수를 log(n)건으로 줄임
+    - 인덱스 종류
+        - 클러스터드(Clustered) 인덱스 (테이블 당 1개)
+            - PK에 자동으로 생성되는 인덱스(무지 빠름)
+            - PK가 없으면 처음으로 설정되는 UNIQUE 제약조건의 컬럼에 인덱스 생성
+        - 보조(Non-Clustered) 인덱스 (여러개)
+            - 사용자가 추가하는 인덱스
+            - 클러스터드 인덱스보다 조금 느림
+    - 유의점
+        - PK에 자동 인덱스후 컬럼에 UNIQUE를 걸어도 인덱스가 생성안됨. 수동으로 생성 필요
+        - WHERE절에서 검색하는 컬럼은 인덱스를 걸어주는 것이 성능향상에 도움
+        - 인덱스는 한 테이블당 4개이상 걸면 성능 저하
+        - NULL값, 중복값이 많은 컬럼에 인덱스는 성능 저하
+        - INSERT, UPDATE, DELETE가 많이 발생하는 테이블에 인덱스를 걸면 성능 저하
+
+        ```sql
+        CREATE INDEX 인덱스명 ON 테이블명(인덱스걸컬럼명)
+        ```
+    
+## 5일차
 - VIEW
 - 서브쿼리
 - 시퀀스
+...
