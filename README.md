@@ -337,3 +337,23 @@ Java개발자 과정 Database 리포지토리
         SELECT *, 함수명(파라미터) 
           FROM 컬럼명; 
         ```
+    - 커서
+        - DB에서 테이블에 들어있는 데이터를 한줄씩 읽기 위해서 필요
+
+        ```sql
+        CURSOR 커서명 IS
+            select쿼리;            
+        ```
+
+    - 트리거
+        - 특정 동작으로 다른 테이블에 자동으로 데이터가 변경되는 기능
+        - 한가지 동작에 대해서 연쇄적으로 다른일 발생
+
+        ```sql
+        CREATE OR REPLACE TRIGGER 트리거명
+        BEFORE|AFTER INSERT|UPDATE|DELETE ON 테이블{뷰}이름
+        BEGIN
+            PL/SQL쿼리
+        END;
+
+        ```
